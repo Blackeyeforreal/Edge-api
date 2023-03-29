@@ -25,11 +25,18 @@ SECRET_KEY = 'django-insecure-1j&2pysp2$(g9w9+32_8r6+^7mca_qj7zxsca0fsy!9@knb!38
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
 
+ALLOWED_HOSTS = ["10.0.2.2",
+               '192.168.43.4',
+                 '127.0.0.1'
+                 ]
 
-# Application definition
+#Application definition    
+AUTH_USER_MODEL = 'Rest_calls.Users'
 
+AUTHENTICATION_BACKENDS = (
+   'django.contrib.auth.backends.ModelBackend',
+)
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -39,17 +46,22 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'Rest_calls',
     'rest_framework',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
+   
    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
   #  myapp.disable.DisableCSRF,
+
+  'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.BrokenLinkEmailsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'API.urls'
@@ -79,7 +91,7 @@ WSGI_APPLICATION = 'API.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite5',
     }
 }
 
@@ -124,3 +136,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+       # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+            'rest_framework.permissions.AllowAny',
+
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+    'rest_framework.authentication.SessionAuthentication',
+    ],
+
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
